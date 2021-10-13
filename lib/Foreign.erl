@@ -36,6 +36,8 @@
         , ffiIO7/9
         ]).
 
+-export([to_ffi/3, to_ffis/3]).
+
 %% Pure FFI
 ffi0(Mod, Fun) -> Mod:Fun().
 ffi1(Mod, Fun, A) -> Mod:Fun(A).
@@ -55,3 +57,11 @@ ffiIO4(Mod, Fun, A, B, C, D) -> ?IO(ffi4(Mod, Fun, A, B, C, D)).
 ffiIO5(Mod, Fun, A, B, C, D, E) -> ?IO(ffi5(Mod, Fun, A, B, C, D, E)).
 ffiIO6(Mod, Fun, A, B, C, D, E, F) -> ?IO(ffi6(Mod, Fun, A, B, C, D, E, F)).
 ffiIO7(Mod, Fun, A, B, C, D, E, F, G) -> ?IO(ffi7(Mod, Fun, A, B, C, D, E, F, G)).
+
+to_ffi(Mod, Instance, From) ->
+    #{toFFI := ToFFI} = Mod:Instance(),
+    ToFFI(From).
+
+to_ffis(Mod, Instance, Froms) ->
+    #{toFFI := ToFFI} = Mod:Instance(),
+    [ToFFI(F) || F <- Froms].
